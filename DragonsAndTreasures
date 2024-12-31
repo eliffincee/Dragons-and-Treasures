@@ -1,0 +1,438 @@
+
+package dragonsortreasuressecondpart;
+
+import java.util.Scanner;
+
+public class DragonsOrTreasuresSecondPart {
+
+    static int d1X=0, d1Y=0, d2X=0, d2Y=0, d3X=0, d3Y=0,
+            d4X=0, d4Y=0, d5X=0, d5Y = 0; //for dragons' locations
+    static int t1X=0, t1Y=0, t2X=0, t2Y=0, 
+                    t3X=0, t3Y=0; //for traps' locations
+    static int escapeX=0, escapeY=0, cliffX=0, cliffY=0; //for exits' locations    
+    
+    static int centerX=4;
+    static int centerY=4;
+    
+    static int[][] playerPositions;
+    static int[] playerScores;
+    static int[] playerTreasures;
+    static int[] playerDragons;
+    static int[] playerTraps;
+    static int numberOfPlayers=0;
+    static int currentPlayerIndex=0;
+    
+    //oyuncu sayısını alan metot;
+    public static void startGame(int players){
+        
+    numberOfPlayers=players;
+    playerPositions = new int[players][2];
+    playerScores = new int[players];
+    playerTreasures = new int[players];
+    playerDragons= new int[players];
+    playerTraps = new int[players];    
+    
+    for(int i=0; i < players; i++){
+        
+        playerPositions[i][0]=4; 
+        playerPositions[i][1]=4; // i. oyuncunun y eksenindeki konumu--> initial playerY (başlangıçtaki y konumu)
+        
+    }
+    
+    dragonsLocations();
+    trapsLocations();
+    placeExits();
+   
+    }
+    
+    public static void gameArea(){
+        
+      for(int y=1; y<=7; y++){
+          
+          for(int x=1; x<=7; x++){
+              
+              if(Math.abs(centerX-x)+Math.abs(centerY-y)<centerX){
+                 boolean playerFound=false;
+                 for(int i=0; i<numberOfPlayers; i++){
+                     if(x==playerPositions[i][0] && y==playerPositions[i][1]){
+                         System.out.print("P"+(i+1));
+                         playerFound=true;
+                         break;
+                     }   
+                 }
+                 if(!playerFound){
+                     System.out.print("*");
+                 }
+                 
+                 
+              }else{
+                  System.out.print(" ");
+              }
+          }
+           System.out.println();
+  
+      }  
+    }
+    
+    public static boolean isInsideDiamond(int x, int y){
+        int dx= Math.abs(centerX-x);
+        int dy=Math.abs(centerY-y);
+        return (dx+dy<centerX);  
+    }
+    
+        public static void dragonsLocations(){
+        
+    while (!isInsideDiamond(d1X, d1Y)|| isSameLocation(d1X, d1Y, t1X, t1Y)
+            || isSameLocation(d1X, d1Y, t2X, t2Y)
+            || isSameLocation(d1X, d1Y, t3X, t3Y)){
+        
+    d1X= (int)(Math.random()*7 + 1);
+    d1Y= (int)(Math.random()*7 + 1);   
+    }   
+    
+    while (!isInsideDiamond(d2X, d2Y)|| isSameLocation(d2X, d2Y, t1X, t1Y) 
+            || isSameLocation(d2X, d2Y, t2X, t2Y) 
+            || isSameLocation(d2X, d2Y, t3X, t3Y)){
+        
+    d2X= (int)(Math.random()*7 + 1);
+    d2Y= (int)(Math.random()*7 + 1);   
+    } 
+     
+    while (!isInsideDiamond(d3X, d3Y)|| isSameLocation(d3X, d3Y, t1X, t1Y) 
+            || isSameLocation(d3X, d3Y, t2X, t2Y)
+            || isSameLocation(d3X, d3Y, t3X, t3Y)){
+        
+    d3X= (int)(Math.random()*7 + 1);
+    d3Y= (int)(Math.random()*7 + 1);   
+    }    
+
+        
+    while (!isInsideDiamond(d4X, d4Y)|| isSameLocation(d4X, d4Y, t1X, t1Y) 
+            || isSameLocation(d4X, d4Y, t2X, t2Y) 
+            || isSameLocation(d4X, d4Y, t3X, t3Y)){
+        
+    d4X= (int)(Math.random()*7 + 1);
+    d4Y= (int)(Math.random()*7 + 1);   
+    }
+    
+    while (!isInsideDiamond(d5X, d5Y)|| isSameLocation(d5X, d5Y, t1X, t1Y) 
+            || isSameLocation(d5X, d5Y, t2X, t2Y) 
+            || isSameLocation(d5X, d5Y, t3X, t3Y)){
+        
+    d5X= (int)(Math.random()*7 + 1);
+    d5Y= (int)(Math.random()*7 + 1);   
+    }
+ 
+    }
+    
+        public static void trapsLocations(){
+       
+    while(!isInsideDiamond(t1X, t1Y)|| isSameLocation(t1X, t1Y, d1X, d1Y) 
+            || isSameLocation(t1X, t1Y, d2X, d2Y) 
+            || isSameLocation(t1X, t1Y, d3X, d3Y) 
+            || isSameLocation(t1X, t1Y, d4X, d4Y) 
+            || isSameLocation(t1X, t1Y, d5X, d5Y)){
+        
+            t1X = (int)(Math.random()*7 + 1);
+            t1Y = (int)(Math.random()*7 + 1);  
+    }
+    
+    while(!isInsideDiamond(t2X, t2Y)|| isSameLocation(t2X, t2Y, d1X, d1Y)
+            || isSameLocation(t2X, t2Y, d2X, d2Y) 
+            || isSameLocation(t2X, t2Y, d3X, d3Y) 
+            || isSameLocation(t2X, t2Y, d4X, d4Y) 
+            || isSameLocation(t2X, t2Y, d5X, d5Y)){
+        
+            t2X = (int)(Math.random()*7 + 1);
+            t2Y = (int)(Math.random()*7 + 1);  
+    }
+    
+    while(!isInsideDiamond(t3X, t3Y)|| isSameLocation(t3X, t3Y, d1X, d1Y) 
+            || isSameLocation(t3X, t3Y, d2X, d2Y) 
+            || isSameLocation(t3X, t3Y, d3X, d3Y)
+            || isSameLocation(t3X, t3Y, d4X, d4Y) 
+            || isSameLocation(t3X, t3Y, d5X, d5Y)){
+        
+            t3X = (int)(Math.random()*7 + 1);
+            t3Y = (int)(Math.random()*7 + 1);  
+    }
+        
+}
+    
+    
+
+    public static void placeExits(){
+
+    while(!isInsideDiamond(escapeX, escapeY)){
+        escapeX=(int)(Math.random()*7 + 1);
+        escapeY=(int)(Math.random()*7 + 1);
+    }    
+    
+    while(!isInsideDiamond(cliffX, cliffY)){
+        cliffX=(int)(Math.random()*7 + 1);
+        cliffY=(int)(Math.random()*7 + 1);
+    }
+ 
+}
+
+    public static boolean isSameLocation(int x1, int y1, int x2, int y2) {
+        return (x1 == x2 && y1 == y2);
+    }
+    
+    public static boolean isTreasure(int x, int y) {
+        return ( x % 2 == 1 && y % 2 == 1 && isInsideDiamond(x, y));
+    }
+
+    public static boolean isDragon(int x, int y){
+     
+    return((x == d1X && y == d1Y) || (x == d2X && y == d2Y) 
+            ||(x == d3X && y == d3Y) || (x == d4X && y == d4Y) ||(x == d5X && y == d5Y));    
+    }
+ 
+    
+    public static boolean isTrap(int x, int y) {
+    return ((x == t1X && y == t1Y) || (x == t2X && y == t2Y) ||
+                (x == t3X && y == t3Y));
+    }
+
+    public static boolean isEscapeExit(int x, int y) {
+    return(x == escapeX && y == escapeY);
+    }
+
+    public static boolean isCliffExit(int x, int y) {
+    return (x == cliffX && y == cliffY);
+    }
+
+    
+public static void movePlayer(char direction) {
+    int x = playerPositions[currentPlayerIndex][0];
+    int y = playerPositions[currentPlayerIndex][1];
+    if (canMove(x, y, direction)) {
+        switch (direction) {
+            case 'w': playerPositions[currentPlayerIndex][1]--;
+            break;
+            case 's': playerPositions[currentPlayerIndex][1]++;
+            break;
+            case 'a': playerPositions[currentPlayerIndex][0]--; 
+            break;
+            case 'd': playerPositions[currentPlayerIndex][0]++; 
+            break;
+        }
+    } else {
+        System.out.println("YOU CANNOT MOVE IN THIS DIRECTION!");
+    }
+}
+    
+    public static boolean canMove(int x, int y, char direction){
+        int newX=x, newY=y;
+        switch(direction){
+            case 'w': newY=y-1;
+            break;
+            case 's': newY=y+1;
+            break;
+            case 'a': newX=x-1;
+            break;
+            case 'd': newX=x+1;
+            break;
+            default: return false;   
+        }
+        return(isInsideDiamond(newX,newY));
+    }
+    
+    public static void encounterDragon(){
+        
+    playerDragons[currentPlayerIndex]++; 
+    int bribe=(int)(Math.random()*101);
+    
+            if (playerTreasures[currentPlayerIndex] >= bribe) {
+            playerTreasures[currentPlayerIndex] -= bribe;    
+            playerScores[currentPlayerIndex] += bribe;
+            System.out.println("You met the dragon and paid a bribe. Bribe amount: "+ bribe);
+        } else {
+            playerScores[currentPlayerIndex] -= bribe;
+            System.out.println("You encountered the dragon and lost points because you did not have enough treasure.");
+        }
+    }
+    
+            public static void encounterTreasure() {
+        if (generate4DigitNum()){
+            int foundTreasure = (int)(Math.random()*201);
+            playerTreasures[currentPlayerIndex] += foundTreasure;
+            System.out.println("You found treasure! The amount of treasure you won: " + foundTreasure);
+        } else {
+            System.out.println("You found treasure, but you couldn't guess correctly.");
+        }
+    }    
+        public static boolean generate4DigitNum(){
+        
+        int generatedNumber = (int)(Math.random()*9000+ 1000);
+        System.out.println("Guess the 4-digit number: ");
+        Scanner scn = new Scanner(System.in);
+        int guess = scn.nextInt();
+        return (guess == generatedNumber);
+    }
+        
+    public static void encounterTrap() {
+        playerTraps[currentPlayerIndex]++;
+        int loss = (int)(Math.random()*51);
+        if (playerTreasures[currentPlayerIndex] >= loss) {
+            playerTreasures[currentPlayerIndex]-= loss;
+            System.out.println("You encountered a trap and lost some of your treasure. Amount of lost treasure: " + loss);
+        } else {
+            System.out.println("You encountered a trap, but you had no loss because you had no treasure.");
+        }
+    }
+
+    public static void printGameStatus() {
+        System.out.println("Current Player: " + (currentPlayerIndex + 1));
+        System.out.println("Current Location: (" + playerPositions[currentPlayerIndex][0] + ", " + playerPositions[currentPlayerIndex][1] + ")");
+        System.out.println("Current Treasure: " + playerTreasures[currentPlayerIndex]);
+        System.out.println("Total points: " + playerScores[currentPlayerIndex]);
+        System.out.println("Number of Dragons Visited: " + playerDragons[currentPlayerIndex]);
+    }
+    
+    public static void latestArea() {
+        for (int y = 1; y <= 7; y++) {
+            for (int x = 1; x <= 7; x++) {
+                if (isInsideDiamond(x, y)) {
+                    boolean playerFound = false;
+                    for (int i = 0; i < numberOfPlayers; i++) {
+                        if (x == playerPositions[i][0] && y == playerPositions[i][1]) {
+                            System.out.print("P" + (i + 1));
+                            playerFound = true;
+                            break;
+                        }
+                    }
+                    if (!playerFound) {
+                        if (isDragon(x, y)) {
+                            System.out.print("D ");
+                        } else if (isTrap(x, y)) {
+                            System.out.print("T ");
+                        } else if (isTreasure(x, y)) {
+                            System.out.print("$ ");
+                        } else if (isEscapeExit(x, y)) {
+                            System.out.print("E ");
+                        } else if (isCliffExit(x, y)) {
+                            System.out.print("C ");
+                        } else {
+                            System.out.print("*");
+                        }
+                    }
+                } else {
+                    System.out.print("  ");
+                }
+            }
+            System.out.println();
+        }
+    }
+    
+        public static int findWinner() {
+        int maxScore = Integer.MIN_VALUE;
+        int winner = -1;
+        for (int i = 0; i < numberOfPlayers; i++) {
+            if (playerScores[i] > maxScore) {
+                maxScore = playerScores[i];
+                winner = i;
+            }
+        }
+        return winner + 1; 
+    }
+
+    public static int findTreasureCollector() {
+        int maxTreasure = Integer.MIN_VALUE;
+        int collector = -1;
+        for (int i = 0; i < numberOfPlayers; i++) {
+            if (playerTreasures[i] > maxTreasure) {
+                maxTreasure = playerTreasures[i];
+                collector = i;
+            }
+        }
+        return collector + 1; 
+    }
+
+    public static int findDragonBriber() {
+        int maxDragons = Integer.MIN_VALUE;
+        int briber = -1;
+        for (int i = 0; i < numberOfPlayers; i++) {
+            if (playerDragons[i] > maxDragons) {
+                maxDragons = playerDragons[i];
+                briber = i;
+            }
+        }
+        return briber + 1; 
+    }
+
+    public static int findUnfortunatePlayer() {
+        int maxTraps = Integer.MIN_VALUE;
+        int unfortunate = -1;
+        for (int i = 0; i < numberOfPlayers; i++) {
+            if (playerTraps[i] > maxTraps) {
+                maxTraps = playerTraps[i];
+                unfortunate = i;
+            }
+        }
+        return unfortunate + 1; 
+    }
+
+    
+    public static void printFinalStatistics() {
+        System.out.println("Game Over! Final Statistics:");
+        for (int i = 0; i < numberOfPlayers; i++) {
+            System.out.println("Player " + (i + 1) + ":");
+            System.out.println("  Final Location: (" + playerPositions[i][0] + ", " + playerPositions[i][1] + ")");
+            System.out.println("  Total Treasure: " + playerTreasures[i]);
+            System.out.println("  Total Points: " + playerScores[i]);
+            System.out.println("  Dragons Visited: " + playerDragons[i]);
+            System.out.println("  Traps Encountered: " + playerTraps[i]);
+        }
+        System.out.println("Winner: Player " + findWinner());
+        System.out.println("Top Treasure Collector: Player " + findTreasureCollector());
+        System.out.println("Top Dragon Briber: Player " + findDragonBriber());
+        System.out.println("Most Unfortunate Player: Player " + findUnfortunatePlayer());
+
+    }
+    
+    public static void main(String[] args) {
+    
+        Scanner scn = new Scanner(System.in);
+        
+        System.out.println("Enter number of players:");
+        int players = scn.nextInt();
+        
+        startGame(players);
+        
+        while(true){
+            gameArea();
+            printGameStatus();
+            System.out.println("-----------------------------------------------------------------------------------------");
+            System.out.println("USE THE KEYS TO MOVE --> up:w, down:s, left:a, right:d ");    
+            
+            char move = scn.next().charAt(0);      
+            
+            if (canMove(playerPositions[currentPlayerIndex][0], playerPositions[currentPlayerIndex][1], move)){ 
+                movePlayer(move); 
+                if(isDragon(playerPositions[currentPlayerIndex][0], playerPositions[currentPlayerIndex][1])){
+                    encounterDragon();
+                }else if(isTrap(playerPositions[currentPlayerIndex][0], playerPositions[currentPlayerIndex][1])){
+                    encounterTrap();
+                }else if(isTreasure(playerPositions[currentPlayerIndex][0], playerPositions[currentPlayerIndex][1])){
+                    encounterTreasure();
+                }else if(isEscapeExit(playerPositions[currentPlayerIndex][0], playerPositions[currentPlayerIndex][1])){
+                    System.out.println("You've arrived at the escape exit! Total points: " + playerScores[currentPlayerIndex]);
+                }else if(isCliffExit(playerPositions[currentPlayerIndex][0], playerPositions[currentPlayerIndex][1])){
+                    System.out.println("You've arrived the cliff exit! You've lost all your treasure and you've lost the game.");
+                    break;
+                }
+            } else {
+                System.out.println("YOU CANNOT MOVE IN THIS DIRECTION!");
+            }
+            
+            currentPlayerIndex = (currentPlayerIndex + 1) % numberOfPlayers;
+        }
+        
+        latestArea();
+        printFinalStatistics();
+
+    }
+}  
+
